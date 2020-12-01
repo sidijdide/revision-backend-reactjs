@@ -12,42 +12,26 @@ function ChangerStats(props) {
   const statitiques=props.stats;
   const points=props.points;
   const handleClick=props.handleClick;
+  const libelles=["Force","Inteligence","Dextérité","Charisme","Endurance"];
   return (
     <>
-      <h1>Valider le profil</h1>
+      <h1>Valider le nouvelle  profil</h1>
       <h3>Points à assigner: {points} points</h3>
-
+  
       <ul>
-        <li>Force: {statitiques[0]} / 18
-        {(points> 0 && statitiques[0] <18) ?
-          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(0)}>incr</Button>
+        {
+          statitiques.map((stat,index) =>
+          
+          <li>{libelles[index]}: {stat} / 18
+        {(points> 0 && stat <18) ?
+          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(index)}>incr</Button>
           :null
         }
         </li>
-        <li>Intelligence: {statitiques[1]}  / 18
-        {(points> 0 && statitiques[1] <18) ?
-          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(1)}>incr</Button>
-          :null
+
+          )
         }
-        </li>
-        <li>Dextérité: {statitiques[2]} / 18
-        {(points> 0 && statitiques[2] <18) ?
-          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(2)}>incr</Button>
-          :null
-        }
-        </li>
-        <li>Charisme: {statitiques[3]} / 18
-        {(points> 0 && statitiques[3] <18) ?
-          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(3)}>incr</Button>
-          :null
-        }
-        </li>
-        <li>Endurance: {statitiques[4]} / 18
-        {(points> 0 && statitiques[4] <18) ?
-          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(4)}>incr</Button>
-          :null
-        }
-        </li>
+        
       </ul>
     </>
   );
