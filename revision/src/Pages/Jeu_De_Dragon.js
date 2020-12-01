@@ -8,34 +8,53 @@ import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function ChangerStats() {
+function ChangerStats(props) {
+  const statitiques=props.stats;
+  const points=props.points;
+  const handleClick=props.handleClick;
   return (
     <>
       <h1>Valider le profil</h1>
-      <h3>Points à assigner: 5 points</h3>
+      <h3>Points à assigner: {points} points</h3>
 
       <ul>
-        <li>Force:  / 18
-          <Button variant="warning" size="sm" className="m-1">incr</Button>
+        <li>Force: {statitiques[0]} / 18
+        {(points> 0 && statitiques[0] <18) ?
+          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(0)}>incr</Button>
+          :null
+        }
         </li>
-        <li>Intelligence:  / 18
-          <Button variant="warning" size="sm" className="m-1">incr</Button>
+        <li>Intelligence: {statitiques[1]}  / 18
+        {(points> 0 && statitiques[1] <18) ?
+          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(1)}>incr</Button>
+          :null
+        }
         </li>
-        <li>Dextérité:  / 18
-          <Button variant="warning" size="sm" className="m-1">incr</Button>
+        <li>Dextérité: {statitiques[2]} / 18
+        {(points> 0 && statitiques[2] <18) ?
+          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(2)}>incr</Button>
+          :null
+        }
         </li>
-        <li>Charisme:  / 18
-          <Button variant="warning" size="sm" className="m-1">incr</Button>
+        <li>Charisme: {statitiques[3]} / 18
+        {(points> 0 && statitiques[3] <18) ?
+          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(3)}>incr</Button>
+          :null
+        }
         </li>
-        <li>Endurance:  / 18
-          <Button variant="warning" size="sm" className="m-1">incr</Button>
+        <li>Endurance: {statitiques[4]} / 18
+        {(points> 0 && statitiques[4] <18) ?
+          <Button variant="warning" size="sm" className="m-1" onClick={()=>handleClick(4)}>incr</Button>
+          :null
+        }
         </li>
       </ul>
     </>
   );
 }
 
-function ChoisirRace() {
+function ChoisirRace(props) {
+  const handleClick=props.handleClick;
   return (
     <>
       <h1>Choisir votre race</h1>
@@ -51,13 +70,13 @@ function ChoisirRace() {
         <tbody>
           <tr>
             <td align="center">
-              <img src="nain.jpg" height="200" alt="nain"/>
+              <img src="nain.jpg" height="200" alt="nain" onClick={()=>handleClick("nain")}/>
             </td>
             <td align="center">
-              <img src="humain.jpg" height="300" alt="humain"/>
+              <img src="humain.jpg" height="300" alt="humain" onClick={()=>handleClick("humain")}/>
             </td>
             <td align="center">
-              <img src="elfe.jpg" height="250" alt="elfe"/>
+              <img src="elfe.jpg" height="250" alt="elfe" onClick={()=>handleClick("elfe")}/>
             </td>
           </tr>
         </tbody>
@@ -67,11 +86,54 @@ function ChoisirRace() {
 }
 
 function App() {
-  var race = null;
-  var composantAffiche = <ChangerStats />;
 
-  if (race == null) {
-    composantAffiche = <ChoisirRace />;
+  const [statistiques,setStatistiques]=useState(null);
+  const [points,setPoints]=useState(5);
+ 
+  function handleClickRace(race){
+    var nouvellesStats=[];
+    nouvellesStats[0]=GenererNombreAleatoire(6,12);
+    nouvellesStats[1]=GenererNombreAleatoire(6,12);
+    nouvellesStats[2]=GenererNombreAleatoire(6,12);
+    nouvellesStats[3]=GenererNombreAleatoire(6,12);
+    nouvellesStats[4]=GenererNombreAleatoire(6,12);
+
+    if(race==="nain"){
+
+      nouvellesStats[0]+=3;
+      nouvellesStats[1]-=2;
+      //statistiques[2]+=3;
+      nouvellesStats[2]+=3;
+      nouvellesStats[3]-=3;
+    }
+    else if(race==="elfe"){
+
+      nouvellesStats[0]-=2;
+      nouvellesStats[1]+=3;
+      nouvellesStats[2]+=3;
+      nouvellesStats[3]-=2;
+    }
+
+    setStatistiques(nouvellesStats);
+  }
+
+  function handleClickStats(index){
+
+       var nouvellesStats=statistiques.slice();
+       nouvellesStats[index]+=1;
+
+       setPoints(points - 1);
+       setStatistiques(nouvellesStats);
+  }
+  function GenererNombreAleatoire(min,max){
+   return Math.floor(Math.random()* (max - min +1 ))+min;
+  }
+
+  composantAffiche = <ChoisirRace handleClick ={handleClickRace} />;
+ 
+
+  if (statistiques != null) {
+    var composantAffiche = <ChangerStats stats={statistiques} points={points} handleClick={handleClickStats} />;
   }
 
   return (
